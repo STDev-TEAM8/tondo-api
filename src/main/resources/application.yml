@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: tondo-api
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tondo
+    username: tondo
+    password: tondo
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100

@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: tondo-postgres
+    environment:
+      POSTGRES_DB: tondo
+      POSTGRES_USER: tondo
+      POSTGRES_PASSWORD: tondo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
