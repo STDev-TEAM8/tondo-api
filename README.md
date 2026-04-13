@@ -1,2 +1,2 @@
 # tondo-api
-STDev 8 Team : Client-side code repository
+STDev 8 Team : Server-side code repository
