@@ -12,3 +12,7 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 100
+
+app:
+  frontend:
+    base-url: "http://localhost:3000"
