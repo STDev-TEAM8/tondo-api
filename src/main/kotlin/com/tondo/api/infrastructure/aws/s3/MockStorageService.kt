@@ -1,4 +1,4 @@
-package com.tondo.api.infrastructure.s3
+package com.tondo.api.infrastructure.aws.s3
 
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
