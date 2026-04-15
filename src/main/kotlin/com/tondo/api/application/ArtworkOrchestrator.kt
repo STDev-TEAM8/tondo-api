@@ -6,6 +6,7 @@ import com.tondo.api.domain.ArtworkCreationStage.*
 import com.tondo.api.domain.ArtworkRepresentation
 import com.tondo.api.dto.ArtworkCreateRequest
 import com.tondo.api.dto.ArtworkCreateResponse
+import com.tondo.api.dto.ArtworkResultResponse
 import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockImageRequest
 import com.tondo.api.infrastructure.aws.bedrock.service.AiService
 import com.tondo.api.infrastructure.aws.s3.ExternalStorageService
@@ -17,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 import java.util.Base64
 import java.util.UUID
 
@@ -123,5 +123,15 @@ class ArtworkOrchestrator(
 
         // 3. 프론트엔드에는 대기 없이 즉시 생성된 번호를 응답
         return ArtworkCreateResponse(taskIdString)
+    }
+
+    fun getArtworkResult(taskId: String): ArtworkResultResponse? {
+        val artwork = artworkService.getArtworkByTaskId(UUID.fromString(taskId))
+        return ArtworkResultResponse(
+            taskId = artwork.taskId.toString(),
+            imageUrl = artwork.imageUrl,
+            report = artwork.docentReport,
+            qrImageUrl = artwork.qrImageUrl
+        )
     }
 }
