@@ -28,6 +28,7 @@ dependencies {
     implementation(platform("software.amazon.awssdk:bom:2.25.27"))
     implementation("software.amazon.awssdk:s3")
     implementation("software.amazon.awssdk:auth")
+    implementation("software.amazon.awssdk:bedrockruntime")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("org.postgresql:postgresql")
