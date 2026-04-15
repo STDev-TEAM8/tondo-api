@@ -22,7 +22,6 @@ class Artwork (
     val artworkId: Long? = null,
 
     val taskId: UUID, // PostgreSQL Native UUID  로 JPA 가 자동으로 매핑 -> Page Utilization 효율 향상
-    val userId: Long,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val imageUrl: String,
     val docentReport: String,

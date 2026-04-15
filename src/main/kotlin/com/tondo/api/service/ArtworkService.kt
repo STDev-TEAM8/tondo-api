@@ -19,9 +19,4 @@ class ArtworkService (
         return artworkRepository.findByTaskId(taskId)
             ?: throw NoSuchElementException("No artwork found for taskId: $taskId")
     }
-
-    fun getArtworksByUserId(userId: Long, page: Int, size: Int): Page<Artwork> {
-        val pageable = PageRequest.of(page, size)
-        return artworkRepository.findByUserId(userId, pageable)
-    }
 }
