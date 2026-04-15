@@ -5,19 +5,21 @@ import com.tondo.api.infrastructure.AwsProperties
 import com.tondo.api.infrastructure.bedrock.dto.BedrockImageRequest
 import com.tondo.api.infrastructure.bedrock.dto.BedrockMessage
 import com.tondo.api.infrastructure.bedrock.dto.BedrockRequest
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.core.SdkBytes
 import software.amazon.awssdk.services.bedrockruntime.BedrockRuntimeClient
 import software.amazon.awssdk.services.bedrockruntime.model.InvokeModelRequest
 
 @Service
+@Profile("prod")
 class BedrockService(
     private val bedrockClient: BedrockRuntimeClient,
     private val props: AwsProperties,
     private val objectMapper: ObjectMapper
-) {
+) : AiService {
 
-    fun chat(userMessage: String): String {
+    override fun chat(userMessage: String): String {
         val requestBody = objectMapper.writeValueAsString(
             BedrockRequest(
                 messages = listOf(BedrockMessage(role = "user", content = userMessage))
@@ -36,7 +38,7 @@ class BedrockService(
     }
 
 
-    fun generateImage(request: BedrockImageRequest): String {
+    override fun generateImage(request: BedrockImageRequest): String {
         val requestBody = mapOf(
             "taskType" to "TEXT_IMAGE",
             "textToImageParams" to mapOf(
