@@ -14,11 +14,12 @@ data class ArtworkRepresentation(
 
     // LLM 호출 이후 채울 필드 : nullable 로 선언
     var report: String? = null,
-    var finalImageUrl: String? = null
+    var finalImageUrl: String? = null,
+    var qrImageUrl: String? = null
 )
 {
     // Domain method: report 와 finalImageUrl 이 모두 null 이 아니면 저장할 준비가 된 것으로 간주
     fun isReadyToSave(): Boolean {
-        return report != null && finalImageUrl != null
+        return report != null && finalImageUrl != null && qrImageUrl != null
     }
 }
