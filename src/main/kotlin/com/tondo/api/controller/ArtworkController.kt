@@ -31,15 +31,7 @@ class ArtworkController(
 
     @GetMapping("/{taskId}")
     fun getArtwork(@PathVariable taskId: String) : ResponseEntity<ArtworkResultResponse> {
-        // TODO: 나중에 실제 DB(ArtworkRepository)에서 taskId로 조회하도록 구현
-        // if(!storage.containsKey(taskId)) {return ResponseEntity.notFound().build()}
-
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(ArtworkResultResponse(
-                taskId = taskId,
-                imageUrl = "https://example.com/image/stub-artwork.png", // 실제 이미지 URL로 교체 예정
-                report = "가짜 도슨트 리포트입니다 워후!" // 실제 보고서 내용으로 교체 예정
-            ))
+        return ResponseEntity.ok(artworkOrchestrator.getArtworkResult(taskId))
     }
 
     @GetMapping("/{taskId}/stream", produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
