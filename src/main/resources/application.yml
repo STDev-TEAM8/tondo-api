@@ -1,16 +1,5 @@
 spring:
   application:
     name: tondo-api
-  datasource:
-    url: jdbc:postgresql://localhost:5432/tondo
-    username: tondo
-    password: tondo
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 100
+  profiles:
+    active: local # 로컬 개발 환경을 기본으로 설정 (필요에 따라 prod, test 등으로 변경)

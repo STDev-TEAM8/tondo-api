@@ -1,0 +1,28 @@
+# Production 환경에서 적용될 application.yml
+# 배포된 DB, 실제 AWS Endpoint 및 접속 정보 기재 필요
+spring:
+  datasource:
+    url: jdbc:postgresql://<AWS_ENDPOINT>:5432/tondo
+    username: tondo
+    password: tondo
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+
+    credentials:
+      access-key: YOUR_ACCESS_KEY
+      secret-key: YOUR_SECRET_KEY
+
+    s3:
+      bucket: your-prod-bucket-name
+
+    bedrock:
+      model-id: your-text-model-id
+      image-model-id: your-image-model-id
