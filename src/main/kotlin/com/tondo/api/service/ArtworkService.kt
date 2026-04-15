@@ -4,8 +4,8 @@ import com.tondo.api.domain.Artwork
 import com.tondo.api.repository.ArtworkRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class ArtworkService (
@@ -15,7 +15,7 @@ class ArtworkService (
         return artworkRepository.save(artwork)
     }
 
-    fun getArtworkByTaskId(taskId: Long): Artwork {
+    fun getArtworkByTaskId(taskId: UUID?): Artwork {
         return artworkRepository.findByTaskId(taskId)
             ?: throw NoSuchElementException("No artwork found for taskId: $taskId")
     }

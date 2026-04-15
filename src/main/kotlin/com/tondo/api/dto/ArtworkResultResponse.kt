@@ -3,5 +3,6 @@ package com.tondo.api.dto
 data class ArtworkResultResponse(
     val taskId: String,
     val imageUrl: String,
-    val report: String?
+    val qrImageUrl: String,
+    val report: String
 )
