@@ -30,6 +30,11 @@ dependencies {
     implementation("software.amazon.awssdk:auth")
     implementation("software.amazon.awssdk:bedrockruntime")
 
+    // QR 코드 바코드 인코딩 코어 라이브러리
+    implementation("com.google.zxing:core:3.5.3")
+    // BufferedImage 등으로 변환해주는 유틸리티 (Java SE용)
+    implementation("com.google.zxing:javase:3.5.3")
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("org.postgresql:postgresql")
 

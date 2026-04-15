@@ -1,4 +1,4 @@
-package com.tondo.api.infrastructure
+package com.tondo.api.infrastructure.aws
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 

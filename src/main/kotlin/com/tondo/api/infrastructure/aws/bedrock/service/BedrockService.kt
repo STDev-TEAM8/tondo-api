@@ -1,10 +1,10 @@
-package com.tondo.api.infrastructure.bedrock.service
+package com.tondo.api.infrastructure.aws.bedrock.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.tondo.api.infrastructure.AwsProperties
-import com.tondo.api.infrastructure.bedrock.dto.BedrockImageRequest
-import com.tondo.api.infrastructure.bedrock.dto.BedrockMessage
-import com.tondo.api.infrastructure.bedrock.dto.BedrockRequest
+import com.tondo.api.infrastructure.aws.AwsProperties
+import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockImageRequest
+import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockMessage
+import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockRequest
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Service
 import software.amazon.awssdk.core.SdkBytes

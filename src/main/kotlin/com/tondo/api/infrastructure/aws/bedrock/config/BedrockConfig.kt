@@ -1,6 +1,6 @@
-package com.tondo.api.infrastructure.bedrock.config
+package com.tondo.api.infrastructure.aws.bedrock.config
 
-import com.tondo.api.infrastructure.AwsProperties
+import com.tondo.api.infrastructure.aws.AwsProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

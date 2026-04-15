@@ -1,4 +1,4 @@
-package com.tondo.api.infrastructure.bedrock.dto
+package com.tondo.api.infrastructure.aws.bedrock.dto
 
 data class BedrockRequest(
     val anthropicVersion: String = "bedrock-2023-05-31",
