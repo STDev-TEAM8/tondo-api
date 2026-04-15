@@ -35,6 +35,9 @@ dependencies {
     // BufferedImage 등으로 변환해주는 유틸리티 (Java SE용)
     implementation("com.google.zxing:javase:3.5.3")
 
+    // Coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("org.postgresql:postgresql")
 
