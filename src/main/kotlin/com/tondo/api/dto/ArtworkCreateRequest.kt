@@ -4,7 +4,7 @@ package com.tondo.api.dto
  * 이미지 생성 요청 DTO
  */
 data class ArtworkCreateRequest(
-    val taskId: String,
+    val uuid: String,
     val averageHz: Double,
     val averageVolulme: Double,
     val averageTimbre: Double,

@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 data class ArtworkRepresentation(
-    val taskId: UUID,
+    val taskId: UUID = java.util.UUID.randomUUID(),
 
     val averageHz: Double,
     val averageVolume: Double,
