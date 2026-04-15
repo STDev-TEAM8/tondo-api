@@ -14,7 +14,7 @@ class MockAiService : AiService {
     }
 
     override fun generateImage(request: BedrockImageRequest): String {
-        // 간단한 이미지 URL을 반환
-        return "https://example.com/generated-image.png"
+        // 간단한 더미 Base64 이미지를 반환
+        return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
     }
 }

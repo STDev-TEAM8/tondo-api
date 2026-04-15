@@ -13,10 +13,13 @@ import com.tondo.api.infrastructure.aws.s3.ExternalStorageService
 import com.tondo.api.infrastructure.qr.QrGenerationCommand
 import com.tondo.api.infrastructure.qr.QrGenerator
 import com.tondo.api.service.ArtworkService
+import com.tondo.api.exception.TondoException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.slf4j.LoggerFactory
 import org.springframework.context.ApplicationEventPublisher
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import java.util.Base64
 import java.util.UUID
@@ -31,6 +34,7 @@ class ArtworkOrchestrator(
     @org.springframework.beans.factory.annotation.Value("\${app.frontend.base-url}")
     private val frontendBaseUrl: String
 ) {
+    private val log = LoggerFactory.getLogger(javaClass)
 
     /**
      * 스테이지 실행을 감싸는 래퍼
@@ -41,11 +45,14 @@ class ArtworkOrchestrator(
         stage: com.tondo.api.domain.ArtworkCreationStage,
         action: suspend () -> T
     ): T {
+        log.info("[Task: {}] Starting stage: {}", taskId, stage)
         return runCatching { action() }
             .onSuccess { 
+                log.info("[Task: {}] Successfully completed stage: {}", taskId, stage)
                 eventPublisher.publishEvent(ArtworkCreationEvent(taskId, stage, isSuccess = true))
             }
             .onFailure { error -> 
+                log.error("[Task: {}] Failed at stage: {}. Error: {}", taskId, stage, error.message, error)
                 eventPublisher.publishEvent(ArtworkCreationEvent(taskId, stage, isSuccess = false, errorMessage = error.message))
             }
             .getOrThrow()
@@ -57,12 +64,22 @@ class ArtworkOrchestrator(
     fun startArtworkCreation(request: ArtworkCreateRequest): ArtworkCreateResponse {
         
         // 1. 도메인이 스스로 식별자를 발급
-        val artworkRepresentation = ArtworkRepresentation(
-            averageHz = request.averageHz,
-            averageVolume = request.averageVolulme,
-            averageTimbre = request.averageTimbre,
-            base64Image = Base64.getDecoder().decode(request.base64Image)
-        )
+        val artworkRepresentation = try {
+            ArtworkRepresentation(
+                averageHz = request.averageHz,
+                averageVolume = request.averageVolulme,
+                averageTimbre = request.averageTimbre,
+                base64Image = Base64.getDecoder().decode(request.base64Image)
+            )
+        } catch (e: IllegalArgumentException) {
+            log.error("Invalid Base64 image data provided for request with uuid: {}", request.uuid)
+            throw TondoException(
+                errorCode = "INVALID_IMAGE_FORMAT",
+                message = "Invalid Base64 image data.",
+                status = HttpStatus.BAD_REQUEST,
+                cause = e
+            )
+        }
 
         val taskId = artworkRepresentation.taskId
         val taskIdString = taskId.toString()
@@ -77,23 +94,22 @@ class ArtworkOrchestrator(
                 }
 
                 // 스텝 2. 이미지 생성
-                executeStage(taskId, IMAGE_GENERATED) {
+                val base64Image = executeStage(taskId, IMAGE_GENERATED) {
                     val imageRequest = BedrockImageRequest.fromDomain(artworkRepresentation)
-                    val base64GeneratedImage = aiService.generateImage(imageRequest)
-                    artworkRepresentation.finalImageUrl = base64GeneratedImage
+                    aiService.generateImage(imageRequest)
                 }
 
                 // 스텝 3. 리소스 업로드 (이미지 & QR)
                 executeStage(taskId, STORAGE_UPLOADED) {
                     // 이미지 S3 업로드
-                    val imageBytes = Base64.getDecoder().decode(artworkRepresentation.finalImageUrl)
+                    val imageBytes = Base64.getDecoder().decode(base64Image)
                     artworkRepresentation.finalImageUrl = storageService.upload(imageBytes, "artworks/artwork_${taskIdString}.png")
 
                     // QR 코드 URL 구성 (프론트엔드 라우팅 스펙: /result/{taskId}?uuid={sessionUuid})
                     val resultUrl = "$frontendBaseUrl/result/${taskIdString}?uuid=${request.uuid}"
                     val qrCommand = QrGenerationCommand(content = resultUrl, width = 256, height = 256)
                     
-                    // QR 이미지 생성 및 O3 업로드
+                    // QR 이미지 생성 및 S3 업로드
                     val qrBytes = qrGenerator.generate(qrCommand)
                     artworkRepresentation.qrImageUrl = storageService.upload(qrBytes, "qrcodes/qr_${taskIdString}.png")
                 }
@@ -116,8 +132,7 @@ class ArtworkOrchestrator(
             } catch (e: Exception) {
                 // 실패 시 이벤트는 executeStage() 내부의 onFailure에서 이미 발송되었으며, SSE 커넥션도 종료됨.
                 // 여기서는 파이프라인 중단만 처리
-                println("Artwork creation pipeline aborted for task: $taskIdString")
-                e.printStackTrace()
+                log.error("[Task: {}] Artwork creation pipeline aborted", taskIdString, e)
             }
         }
 
