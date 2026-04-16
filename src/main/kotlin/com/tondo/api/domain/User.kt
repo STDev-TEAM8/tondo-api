@@ -7,14 +7,15 @@ import jakarta.persistence.Id
 import jakarta.persistence.SequenceGenerator
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
+import org.hibernate.validator.constraints.Length
 
 @Entity
 @Table(
     name = "users",
     uniqueConstraints = [
         UniqueConstraint(
-            name = "uk_user_name_phone",
-            columnNames = ["name", "phone_number"]
+            name = "uk_user_password",
+            columnNames = ["name", "password"]
         )
     ]
 )
@@ -24,5 +25,5 @@ class User (
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 10)
     val id: Long? = null,
     val username: String,
-    val phoneNumber: String
+    val password: String
 )
