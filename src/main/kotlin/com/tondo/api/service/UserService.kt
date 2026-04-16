@@ -12,10 +12,10 @@ class UserService (
     private val passwordEncoder: PasswordEncoder
 ) {
     fun getOrCreateUser(request: SignupRequest): User {
+
         if (request.password.length != 4) {
             throw IllegalArgumentException("비밀번호는 반드시 4글자여야 합니다.")
         }
-
         val encodedPassword = passwordEncoder.encode(request.password)
 
         return userRepository.save(User(username = request.username, password = encodedPassword))
