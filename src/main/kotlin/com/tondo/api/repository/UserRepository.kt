@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository : JpaRepository<User, Long> {
      fun findByUsernameAndPassword(username: String, password: String): User?
+     fun findAllByUsername(username: String): List<User>
 }
