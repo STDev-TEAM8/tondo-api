@@ -26,3 +26,7 @@ cloud:
     bedrock:
       model-id: your-text-model-id
       image-model-id: your-image-model-id
+
+app:
+  frontend:
+    base-url: "https://tondo.app"
