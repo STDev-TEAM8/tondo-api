@@ -1,0 +1,14 @@
+services:
+  tondo-api:
+    build: .
+    container_name: tondo-api
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - DB_URL=${DB_URL}/${DB_NAME}
+
+    depends_on:
+      postgres:
+        condition: service_healthy
