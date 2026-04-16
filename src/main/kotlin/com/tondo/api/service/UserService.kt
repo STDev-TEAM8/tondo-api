@@ -1,16 +1,23 @@
 package com.tondo.api.service
 
 import com.tondo.api.domain.User
+import com.tondo.api.dto.SignupRequest
 import com.tondo.api.repository.UserRepository
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
 class UserService (
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val passwordEncoder: PasswordEncoder
 ) {
-    // 체험 목적에 맞도록 Get-or-Create 방식으로 구현.
-    fun getOrCreateUser(username: String, phoneNumber: String): User {
-        return userRepository.findByUsernameAndPhoneNumber(username, phoneNumber)
-            ?: userRepository.save(User(username = username, phoneNumber = phoneNumber))
+    fun createUser(request: SignupRequest): User {
+        if (request.password.length != 4) {
+            throw IllegalArgumentException("비밀번호는 반드시 4글자여야 합니다.")
+        }
+
+        val encodedPassword = passwordEncoder.encode(request.password)
+
+        return userRepository.save(User(username = request.username, password = encodedPassword))
     }
 }
