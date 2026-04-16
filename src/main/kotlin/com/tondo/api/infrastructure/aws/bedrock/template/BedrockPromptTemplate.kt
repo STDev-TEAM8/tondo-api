@@ -35,21 +35,33 @@ object BedrockPromptTemplate {
     /**
      * 이미지 생성용 프롬프트 생성
      */
-    fun createImageGenerationPrompt(
-        hexColor: String = "#97b6e1" // 필요시 동적으로 주입
-    ): String {
+//    fun createImageGenerationPrompt(
+//        hexColor: String = "#97b6e1"
+//    ): String {
+//        // Stability Core 모델은 영문 지시어에 최적화되어 있습니다.
+//        return """
+//            [Subject & Structure]
+//            Precisely preserve all detailed geometric structures and Chladni pattern shapes from the provided reference.
+//
+//            [Style & Color]
+//            A sophisticated acrylic painting with visible canvas texture and fine brushstrokes.
+//            Apply the color $hexColor: use deep tones for darker areas and vibrant, bright tones for the pattern's highlights.
+//            The composition should be bold, dynamic, and structurally aligned with the geometric pattern.
+//
+//            [Detail & Texture]
+//            Visually captivating smartphone wallpaper style.
+//            Reinterpret fine dots as rhythmic acrylic pointillism.
+//            Convert fine points into flowing, continuous lines with a binary contrast of light and shadow.
+//            Ensure a perfect harmony between symmetrical structure and rich, thick paint texture.
+//        """.trimIndent()
+//    }
+    fun createImageGenerationPrompt(hexColor: String = "#97b6e1"): String {
         return """
-            [주제 및 데이터 설명]
-            "제공된 클라드니 패턴 이미지의 모든 세부 구조와 형태를 절대적으로 유지하십시오."
-
-            [스타일 및 색상 정보 적용]
-            "이 패턴을 정교한 아크릴화 작품으로 만드세요. 캔버스 질감과 미세한 아크릴 붓 터치를 사용하여 패턴을 형성하십시오. 제공된 색상 코드 중 어두운 색조는 패턴의 어두운 부분에 할당하고, 밝은 색조는 밝은 패턴 부분에 할당하십시오. 색상은 패턴의 기하학적 형태에 따라 구조적으로 분포해야 하며, 대담하고 활기차게 구성되어야 합니다."
-
-            [용도 및 세부 질감]
-            "결과물은 시각적으로 매혹적인 스마트폰 배경화면이어야 합니다. 원본의 미세한 점 패턴을 아크릴 점묘 기법으로 재해석하여 하십시오. 패턴의 미세한 점들은 어두움과 밝음의 이분법적인 구성으로 점이 아닌 선으로 표한하십시오 . 대칭적인 구조가 아크릴 물감의 풍부한 색상과 질감 속에서 완벽하게 조화를 이루게 하십시오."
-
-            [데이터]
-            색상코드 = ${hexColor}
+            High-quality acrylic painting on canvas, 
+            intricate Chladni pattern with geometric symmetry, 
+            primary color palette of $hexColor with deep contrasting shadows, 
+            thick brushstroke texture, rhythmic pointillism, 
+            modern abstract art style, 8k resolution, masterpiece.
         """.trimIndent()
     }
 }

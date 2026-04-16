@@ -1,8 +1,12 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tondo_test
-    username: tondo
-    password: tondo
+    url: ${TEST_DB_URL} # 변수 없으면 기본값 사용
+    username: ${TEST_DB_USERNAME}
+    password: ${TEST_DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create-drop # 테스트 종료 후 스키마 삭제
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

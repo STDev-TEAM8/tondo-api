@@ -1,13 +1,14 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tondo
-    username: tondo
-    password: tondo
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update
     open-in-view: false
+    show-sql: true # 쿼리 확인을 위해 추가하면 좋습니다
     properties:
       hibernate:
         format_sql: true
@@ -15,4 +16,4 @@ spring:
 
 app:
   frontend:
-    base-url: "http://localhost:3000"
+    base-url: ${FRONTEND_URL}

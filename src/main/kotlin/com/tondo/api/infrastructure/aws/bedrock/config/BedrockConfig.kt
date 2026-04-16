@@ -19,10 +19,17 @@ class BedrockConfig(private val props: AwsProperties) {
     fun bedrockRuntimeClient(): BedrockRuntimeClient =
         BedrockRuntimeClient.builder()
             .region(Region.of(props.region.static))
-            .credentialsProvider(
-                StaticCredentialsProvider.create(
-                    AwsBasicCredentials.create(props.credentials.accessKey, props.credentials.secretKey)
-                )
-            )
+            .credentialsProvider(credentialsProvider())
             .build()
+
+    @Bean("imageBedrockClient")
+    fun imageBedrockClient(): BedrockRuntimeClient =
+        BedrockRuntimeClient.builder()
+            .region(Region.of(props.bedrock.imageRegion))
+            .credentialsProvider(credentialsProvider())
+            .build()
+
+    private fun credentialsProvider() = StaticCredentialsProvider.create(
+        AwsBasicCredentials.create(props.credentials.accessKey, props.credentials.secretKey)
+    )
 }

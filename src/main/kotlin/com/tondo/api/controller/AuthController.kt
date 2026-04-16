@@ -16,6 +16,6 @@ class AuthController (
     @PostMapping("/signup")
     fun signup(@RequestBody request: SignupRequest): SignupResponse {
         val user = userService.getOrCreateUser(request.username, request.phoneNumber)
-        return SignupResponse(user.id, user.username, user.username)
+        return SignupResponse(user.id, user.username, user.phoneNumber)
     }
 }

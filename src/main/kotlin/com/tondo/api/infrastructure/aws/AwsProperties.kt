@@ -12,5 +12,6 @@ data class AwsProperties(
     data class RegionProperties(val static: String)
     data class CredentialProperties(val accessKey: String, val secretKey: String)
     data class S3Properties(val bucket: String)
-    data class BedrockProperties(val modelId: String, val imageModelId: String)
+    data class BedrockProperties(val modelId: String, val imageModelId: String, val imageRegion: String = "us-west-2"
+    )
 }
