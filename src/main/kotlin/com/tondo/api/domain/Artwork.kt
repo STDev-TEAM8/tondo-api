@@ -1,5 +1,6 @@
 package com.tondo.api.domain
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -24,6 +25,7 @@ class Artwork (
     val taskId: UUID, // PostgreSQL Native UUID  로 JPA 가 자동으로 매핑 -> Page Utilization 효율 향상
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val imageUrl: String,
+    @Column(columnDefinition = "TEXT")
     val docentReport: String,
     val qrImageUrl: String,
 )
