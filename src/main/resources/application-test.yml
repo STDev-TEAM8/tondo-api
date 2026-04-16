@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${TEST_DB_URL} # 변수 없으면 기본값 사용
+    url: jdbc:postgresql://${TEST_DB_HOST}:${TEST_DB_PORT}/${TEST_DB_NAME}
     username: ${TEST_DB_USERNAME}
     password: ${TEST_DB_PASSWORD}
   jpa:
