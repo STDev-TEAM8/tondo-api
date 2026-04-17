@@ -55,18 +55,45 @@ object BedrockPromptTemplate {
 //            Ensure a perfect harmony between symmetrical structure and rich, thick paint texture.
 //        """.trimIndent()
 //    }
+//    fun createImageGenerationPrompt(voiceColor: String = "#97b6e1"): String {
+//        return """
+//          Sophisticated acrylic painting on textured canvas,
+//          preserving the exact geometric Chladni pattern structure,
+//          primary color $voiceColor with deep dark tones in shadow regions and vibrant bright tones in highlights,
+//          colors structurally distributed along the geometric forms,
+//          bold and dynamic composition,
+//          fine acrylic brushstroke texture,
+//          reinterpreted pointillism with flowing continuous lines instead of dots,
+//          binary contrast of light and shadow,
+//          symmetrical structure with rich thick paint texture,
+//          smartphone wallpaper, 8k resolution, masterpiece
+//      """.trimIndent()
+//    }
     fun createImageGenerationPrompt(voiceColor: String = "#97b6e1"): String {
         return """
-          Sophisticated acrylic painting on textured canvas,
-          preserving the exact geometric Chladni pattern structure,
-          primary color $voiceColor with deep dark tones in shadow regions and vibrant bright tones in highlights,
-          colors structurally distributed along the geometric forms,
-          bold and dynamic composition,
-          fine acrylic brushstroke texture,
-          reinterpreted pointillism with flowing continuous lines instead of dots,
-          binary contrast of light and shadow,
-          symmetrical structure with rich thick paint texture,
-          smartphone wallpaper, 8k resolution, masterpiece
-      """.trimIndent()
+        A luxurious acrylic oil painting on textured canvas,
+        depicting the flowing wave pattern from the reference image,
+        thick impasto brushstrokes, palette knife texture,
+        visible canvas weave, rich layered pigment, tactile surface,
+        
+        dominant color palette built around $voiceColor,
+        harmonious tonal variations from deep shadow to bright highlight of this hue,
+        painterly gradients following the wave ridges,
+        
+        museum-quality fine art, gallery piece,
+        dramatic chiaroscuro lighting on paint texture,
+        ultra detailed brush fibers, 8k, smartphone wallpaper composition
+    """.trimIndent()
+    }
+
+    fun createNegativePrompt(): String {
+        return """
+        sand particles, dots, pointillism, halftone, dotted pattern,
+        photorealistic, photograph, 3d render, CGI, smooth plastic surface,
+        flat illustration, vector art, digital art,
+        dark background, black background, low contrast,
+        geometric shapes, mandala, kaleidoscope, radial symmetry,
+        text, watermark, signature, blurry, low quality
+    """.trimIndent()
     }
 }
