@@ -157,17 +157,17 @@ class BedrockService(
     private fun buildStabilityRequest(request: BedrockImageRequest): Map<String, Any> {
         val body = mutableMapOf<String, Any>(
             "prompt" to request.prompt,
-            "mode" to "text-to-image",
-            "aspect_ratio" to "1:1",
             "output_format" to "png"
         )
 
-        if (request.negativePrompt.isNotBlank()) {
-            body["negative_prompt"] = request.negativePrompt
+        if (request.referenceImageBase64 != null) {
+            body["mode"] = "image-to-image"
+            body["image"] = request.referenceImageBase64
+            body["strength"] = 0.65 // Fine-tuning 을 위해 조정해야하는 파라미터. 0으로 가까울수록 Skeletal 이미지에 가깝게, 멀 수록 artistic.
         }
 
-        if (request.referenceImageBase64 != null) {
-            log.warn("Stability Core v1 does not support img2img. Reference image ignored.")
+        if (request.negativePrompt.isNotBlank()) {
+            body["negative_prompt"] = request.negativePrompt
         }
 
         return body
