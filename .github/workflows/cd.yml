@@ -66,60 +66,79 @@ jobs:
         ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
         ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
         IMAGE_TAG: ${{ github.sha }}
+        AWS_REGION: ${{ env.AWS_REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_KEY }}
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG,AWS_REGION
+        envs: ECR_REGISTRY,ECR_REPOSITORY,IMAGE_TAG,AWS_REGION,AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY
         script: |
+          # 명령어 실패 시 즉시 중단 (가짜 200 성공 판정 방지)
+          set -e 
+          
           cd /home/ubuntu
           
-          # 1. API_IMAGE 동적 생성 및 .env 덮어쓰기
+          # --- 1. 환경 변수(.env) 동적 생성 ---
           FULL_IMAGE_URI="${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}"
           echo "API_IMAGE=${FULL_IMAGE_URI}" > .env
           
-          # 2. Database 세팅 (DB_PASSWORD는 이제 secrets에서 가져옴)
+          # Database 세팅 (DB_PASSWORD는 secrets에서)
           echo "DB_HOST=${{ vars.DB_HOST }}" >> .env
           echo "DB_PORT=${{ vars.DB_PORT }}" >> .env
           echo "DB_NAME=${{ vars.DB_NAME }}" >> .env
           echo "DB_USERNAME=${{ vars.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           
-          # 3. AWS Credentials 세팅 (Secrets)
+          # AWS Credentials 세팅
           echo "AWS_ACCESS_KEY=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
           echo "AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }}" >> .env
           
-          # 4. S3 & Bedrock 세팅 (Variables)
+          # S3 & Bedrock 세팅
           echo "S3_BUCKET=${{ vars.S3_BUCKET }}" >> .env
           echo "BEDROCK_MODEL_ID=${{ vars.BEDROCK_MODEL_ID }}" >> .env
           echo "BEDROCK_IMAGE_MODEL_ID=${{ vars.BEDROCK_IMAGE_MODEL_ID }}" >> .env
           
-          # 5. Frontend 세팅
+          # Frontend 세팅
           echo "FRONTEND_URL=${{ vars.FRONTEND_URL }}" >> .env
           
-          # 6. ECR 로그인 및 컨테이너 실행 (--no-build 옵션으로 로컬 빌드 방지)
+          # --- 2. AWS ECR 로그인 및 이미지 Pull ---
+          export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+          export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+          export AWS_DEFAULT_REGION=$AWS_REGION
+          
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+          
+          echo "ECR에서 최신 이미지 Pull 중..."
+          docker compose pull
+          
+          # --- 3. Docker Compose V2 실행 ---
+          echo "컨테이너 실행 중..."
           docker compose up -d --no-build
           
-          # 7. 스마트 헬스체크 (애플리케이션이 뜰 때까지 기다림)
+          # --- 4. 스마트 헬스체크 ---
           MAX_RETRIES=5
           RETRY_COUNT=0
           HEALTH_URL="http://localhost:8080/actuator/health"
           
-          echo "🚀 애플리케이션 헬스체크 시작..."
+          echo "애플리케이션 헬스체크 시작..."
+          
+          # 헬스체크 루프를 위해 에러 즉시 중단 옵션 해제
+          set +e 
           
           while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
             STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" $HEALTH_URL || echo "000")
             
             if [ "$STATUS_CODE" == "200" ]; then
-              echo "✅ [성공] 애플리케이션 정상 구동 (Status: 200)"
+              echo "[성공] 애플리케이션 정상 구동 (Status: 200)"
               exit 0
             fi
             
             RETRY_COUNT=$((RETRY_COUNT+1))
-            echo "⏳ 대기 중... ($RETRY_COUNT/$MAX_RETRIES) - 15초 후 재시도 (응답: $STATUS_CODE)"
+            echo "대기 중... ($RETRY_COUNT/$MAX_RETRIES) - 15초 후 재시도 (응답: $STATUS_CODE)"
             sleep 15
           done
           
-          echo "❌ [실패] 헬스체크 타임아웃! 서버 로그를 확인하세요."
+          echo "[실패] 헬스체크 타임아웃! 서버 로그를 확인하세요."
           exit 1
