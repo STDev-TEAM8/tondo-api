@@ -163,7 +163,7 @@ class BedrockService(
         if (request.referenceImageBase64 != null) {
             body["mode"] = "image-to-image"
             body["image"] = request.referenceImageBase64
-            body["strength"] = 0.10 // Fine-tuning 을 위해 조정해야하는 파라미터. 0으로 가까울수록 Skeletal 이미지에 가깝게, 멀 수록 artistic.
+            body["strength"] = 0.35 // Fine-tuning 을 위해 조정해야하는 파라미터. 0으로 가까울수록 Skeletal 이미지에 가깝게, 멀 수록 artistic.
         }
 
         if (request.negativePrompt.isNotBlank()) {
