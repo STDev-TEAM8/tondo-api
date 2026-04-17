@@ -99,7 +99,7 @@ jobs:
           
           # 6. ECR 로그인 및 컨테이너 실행 (--no-build 옵션으로 로컬 빌드 방지)
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-          docker-compose -f docker-compose.yml -f docker-compose-db.yml -f docker-compose-api.yml up -d --no-build
+          docker compose up -d --no-build
           
           # 7. 스마트 헬스체크 (애플리케이션이 뜰 때까지 기다림)
           MAX_RETRIES=5
