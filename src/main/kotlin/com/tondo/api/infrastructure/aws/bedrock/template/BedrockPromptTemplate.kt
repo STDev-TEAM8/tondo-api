@@ -57,11 +57,16 @@ object BedrockPromptTemplate {
 //    }
     fun createImageGenerationPrompt(voiceColor: String = "#97b6e1"): String {
         return """
-            High-quality acrylic painting on canvas, 
-            intricate Chladni pattern with geometric symmetry, 
-            primary color palette of $voiceColor with deep contrasting shadows, 
-            thick brushstroke texture, rhythmic pointillism, 
-            modern abstract art style, 8k resolution, masterpiece.
-        """.trimIndent()
+          Sophisticated acrylic painting on textured canvas,
+          preserving the exact geometric Chladni pattern structure,
+          primary color $voiceColor with deep dark tones in shadow regions and vibrant bright tones in highlights,
+          colors structurally distributed along the geometric forms,
+          bold and dynamic composition,
+          fine acrylic brushstroke texture,
+          reinterpreted pointillism with flowing continuous lines instead of dots,
+          binary contrast of light and shadow,
+          symmetrical structure with rich thick paint texture,
+          smartphone wallpaper, 8k resolution, masterpiece
+      """.trimIndent()
     }
 }
