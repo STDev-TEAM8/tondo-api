@@ -7,6 +7,8 @@ import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockImageRequest
 import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockMessage
 import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockRequest
 import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate
+import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate.createImageGenerationPrompt
+import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate.createNegativePrompt
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Profile
@@ -132,8 +134,6 @@ class BedrockService(
                     "similarityStrength" to 0.7
                 ),
                 "imageGenerationConfig" to mapOf(
-                    "width" to request.width,
-                    "height" to request.height,
                     "numberOfImages" to 1,
                     "quality" to "standard"
                 )
@@ -145,8 +145,6 @@ class BedrockService(
                     "text" to request.prompt
                 ),
                 "imageGenerationConfig" to mapOf(
-                    "width" to request.width,
-                    "height" to request.height,
                     "numberOfImages" to 1,
                     "quality" to "standard"
                 )
@@ -162,9 +160,11 @@ class BedrockService(
 
         if (request.referenceImageBase64 != null) {
             body["mode"] = "image-to-image"
+            body["negative_prompt"] = createNegativePrompt()
             body["image"] = request.referenceImageBase64
-            body["strength"] = 0.50 // Fine-tuning 을 위해 조정해야하는 파라미터. 0으로 가까울수록 Skeletal 이미지에 가깝게, 멀 수록 artistic.
-        }
+            body["strength"] = 0.62
+            body["seed"] = 0
+      }
 
         if (request.negativePrompt.isNotBlank()) {
             body["negative_prompt"] = request.negativePrompt
