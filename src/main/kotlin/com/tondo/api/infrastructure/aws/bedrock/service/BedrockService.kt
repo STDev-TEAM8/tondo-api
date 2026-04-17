@@ -38,7 +38,8 @@ class BedrockService(
         val prompt = BedrockPromptTemplate.createDocentPrompt(
             averageHz = artworkRepresentation.averageHz,
             averageTimbre = artworkRepresentation.averageTimbre,
-            averageVolume = artworkRepresentation.averageVolume
+            averageVolume = artworkRepresentation.averageVolume,
+            voiceColor = artworkRepresentation.voiceColor
         )
 
         val requestBody = objectMapper.writeValueAsString(

@@ -69,7 +69,8 @@ class ArtworkOrchestrator(
                 averageHz = request.averageHz,
                 averageVolume = request.averageVolulme,
                 averageTimbre = request.averageTimbre,
-                base64Image = Base64.getDecoder().decode(request.base64Image)
+                base64Image = Base64.getDecoder().decode(request.base64Image),
+                voiceColor = request.voiceColor
             )
         } catch (e: IllegalArgumentException) {
             log.error("Invalid Base64 image data provided for request with uuid: {}", request.uuid)

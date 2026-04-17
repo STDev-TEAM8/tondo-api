@@ -10,6 +10,7 @@ data class ArtworkRepresentation(
     val averageVolume: Double,
     val averageTimbre: Double,
     val base64Image: ByteArray, // 현행 기획 및 설계 상 중복 제거와 같은 비교 로직이 필요하지 않음 -> hashCode(), equals() 오버라이드 불필요
+    val voiceColor: String, // 음색의 HEX CODE
     val creatdAt: LocalDateTime = LocalDateTime.now(),
 
     // LLM 호출 이후 채울 필드 : nullable 로 선언
