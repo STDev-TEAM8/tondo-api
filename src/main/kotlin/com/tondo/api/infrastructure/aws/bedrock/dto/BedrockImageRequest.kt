@@ -12,7 +12,7 @@ data class BedrockImageRequest(
 ) {
     companion object {
         fun fromDomain(rep: ArtworkRepresentation): BedrockImageRequest {
-            val generatedPrompt = BedrockPromptTemplate.createImageGenerationPrompt()
+            val generatedPrompt = BedrockPromptTemplate.createImageGenerationPrompt(rep.voiceColor)
             // ArtworkRepresentation의 base64Image가 ByteArray이므로 AWS 스펙에 맞게 Base64 String으로 인코딩합니다.
             val encodedImage = java.util.Base64.getEncoder().encodeToString(rep.base64Image)
             

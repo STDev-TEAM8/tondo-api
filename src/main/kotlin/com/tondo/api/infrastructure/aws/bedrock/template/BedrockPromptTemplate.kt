@@ -13,7 +13,7 @@ object BedrockPromptTemplate {
         averageHz: Double,
         averageTimbre: Double,
         averageVolume: Double,
-        hexColor: String = "#97b6e1" // 필요시 동적으로 주입할 수 있도록 기본값 파라미터화
+        voiceColor: String = "#97b6e1" // 필요시 동적으로 주입할 수 있도록 기본값 파라미터화
     ): String {
         return """
             당신은 미디어 아트 페스티벌의 수석 도슨트입니다. 아래의 관람객 음성 추출 데이터와 이 파동을 시각화하기 위해 AI에 적용된 아트워크 스타일과 실제 적용된 이미지를 바탕으로 도슨트 해설을 작성해 주세요.
@@ -24,7 +24,7 @@ object BedrockPromptTemplate {
             - 목소리 크기 (에너지): ${averageVolume}dB
 
             [시각화 적용 스타일 및 색상]
-            - 메인 색상 코드: ${hexColor} (이 색상을 기반으로 어두움과 밝음이 배치됨)
+            - 메인 색상 코드: ${voiceColor} (이 색상을 기반으로 어두움과 밝음이 배치됨)
             - 렌더링 기법: 캔버스 질감이 살아있는 정교한 아크릴화
             - 세부 묘사: 대담하고 대칭적인 구조, 미세한 점들을 선으로 재해석한 이분법적 점묘 기법
 
@@ -55,11 +55,11 @@ object BedrockPromptTemplate {
 //            Ensure a perfect harmony between symmetrical structure and rich, thick paint texture.
 //        """.trimIndent()
 //    }
-    fun createImageGenerationPrompt(hexColor: String = "#97b6e1"): String {
+    fun createImageGenerationPrompt(voiceColor: String = "#97b6e1"): String {
         return """
             High-quality acrylic painting on canvas, 
             intricate Chladni pattern with geometric symmetry, 
-            primary color palette of $hexColor with deep contrasting shadows, 
+            primary color palette of $voiceColor with deep contrasting shadows, 
             thick brushstroke texture, rhythmic pointillism, 
             modern abstract art style, 8k resolution, masterpiece.
         """.trimIndent()
