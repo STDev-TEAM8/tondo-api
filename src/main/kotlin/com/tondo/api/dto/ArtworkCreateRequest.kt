@@ -6,7 +6,7 @@ package com.tondo.api.dto
 data class ArtworkCreateRequest(
     val uuid: String,
     val averageHz: Double,
-    val averageVolulme: Double,
+    val averageVolume: Double,
     val averageTimbre: Double,
     val base64Image: String, // 이 필드의 크기가 클 수 있습니다! JSON 페이로드 크기 보고, request body size limit 늘려야할 수 있습니다!
     val voiceColor: String // 음색의 HEX CODE
