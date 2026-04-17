@@ -1,5 +1,6 @@
 services:
   tondo-api:
+    image: ${API_IMAGE:-my-local-api:local}
     build: .
     container_name: tondo-api
     ports:
