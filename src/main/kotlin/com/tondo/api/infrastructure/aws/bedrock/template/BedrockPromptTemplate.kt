@@ -13,7 +13,7 @@ object BedrockPromptTemplate {
         averageHz: Double,
         averageTimbre: Double,
         averageVolume: Double,
-        voiceColor: String = "#97b6e1" // 필요시 동적으로 주입할 수 있도록 기본값 파라미터화
+        voiceColor: String = "light blue" // 필요시 동적으로 주입할 수 있도록 기본값 파라미터화
     ): String {
         return """
             당신은 미디어 아트 페스티벌의 수석 도슨트입니다. 아래의 관람객 음성 추출 데이터와 이 파동을 시각화하기 위해 AI에 적용된 아트워크 스타일과 실제 적용된 이미지를 바탕으로 도슨트 해설을 작성해 주세요.
@@ -69,16 +69,26 @@ object BedrockPromptTemplate {
 //          smartphone wallpaper, 8k resolution, masterpiece
 //      """.trimIndent()
 //    }
-    fun createImageGenerationPrompt(voiceColor: String = "#97b6e1"): String {
+//
+
+
+    fun createImageGenerationPrompt(voiceColor: String = "light blue"): String {
         return """
-        A luxurious acrylic oil painting on textured canvas,
-        depicting the flowing wave pattern from the reference image,
+        $voiceColor monochromatic painting, strict $voiceColor color scheme only,
+        
+        redraw the Chladni figure pattern from the reference image,
+        preserve the exact geometric sand ripple lines and nodal curves,
+        symmetric geometric wave interference pattern,
+        fine granular lines forming geometric shapes,
+        
+        luxurious acrylic oil painting on textured canvas,
         thick impasto brushstrokes, palette knife texture,
         visible canvas weave, rich layered pigment, tactile surface,
         
-        dominant color palette built around $voiceColor,
-        harmonious tonal variations from deep shadow to bright highlight of this hue,
-        painterly gradients following the wave ridges,
+        dark $voiceColor background, bright $voiceColor pattern lines,
+        deep $voiceColor in shadows, bright $voiceColor in highlights,
+        every brushstroke and pigment in shades of $voiceColor only,
+        NO other dominant colors except $voiceColor variations,
         
         museum-quality fine art, gallery piece,
         dramatic chiaroscuro lighting on paint texture,
