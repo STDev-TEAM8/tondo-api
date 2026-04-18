@@ -67,7 +67,7 @@ class ArtworkOrchestrator(
         val artworkRepresentation = try {
             ArtworkRepresentation(
                 averageHz = request.averageHz,
-                averageVolume = request.averageVolulme,
+                averageVolume = request.averageVolume,
                 averageTimbre = request.averageTimbre,
                 base64Image = Base64.getDecoder().decode(request.base64Image),
                 voiceColor = request.voiceColor
