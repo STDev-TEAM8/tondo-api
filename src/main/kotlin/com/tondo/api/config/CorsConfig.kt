@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 class CorsConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/api/**")
-            .allowedOrigins("http://localhost:5173", "https://tondo-client.vercel.app")
+            .allowedOrigins("http://localhost:5173", "https://tondo-client.vercel.app", "https://tondo-client-theta.vercel.app")
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*")
     }
