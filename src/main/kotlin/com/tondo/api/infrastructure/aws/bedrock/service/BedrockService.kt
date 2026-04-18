@@ -7,7 +7,6 @@ import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockImageRequest
 import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockMessage
 import com.tondo.api.infrastructure.aws.bedrock.dto.BedrockRequest
 import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate
-import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate.createImageGenerationPrompt
 import com.tondo.api.infrastructure.aws.bedrock.template.BedrockPromptTemplate.createNegativePrompt
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
@@ -162,8 +161,7 @@ class BedrockService(
             body["mode"] = "image-to-image"
             body["negative_prompt"] = createNegativePrompt()
             body["image"] = request.referenceImageBase64
-            body["strength"] = 0.62
-            body["seed"] = 0
+            body["strength"] = 0.65
       }
 
         if (request.negativePrompt.isNotBlank()) {
